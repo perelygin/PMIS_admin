@@ -42,7 +42,7 @@ AppAsset::register($this);
             ['label' => 'О системе', 'url' => ['/site/about']],
             ['label' => 'Контакты', 'url' => ['/site/contact']],
             ['label' => 'Справочники', 'items' => [
-				['label' => 'Проекты', 'url'=>['/site/about']],
+				['label' => 'Проекты', 'url'=>['/pmis/test1']],
 				['label' => 'Этапы работ', 'url'=>['/site/about']],
             ]],
             Yii::$app->user->isGuest ? (
