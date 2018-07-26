@@ -7,7 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
+use app\models\TestModel;
 use app\models\ContactForm;
 
 class PmisController extends Controller
@@ -61,8 +61,16 @@ class PmisController extends Controller
      */
     public function actionTest1()
     {
+		$model = new TestModel();
 		
-        return $this->render('test1');
+		if ($model->load(Yii::$app->request->post())){
+			Yii::$app->session->addFlash('info','c c c ccdddd');
+			return $this->refresh();
+		}
+		
+        return $this->render('test1',[
+            'model' => $model,
+        ]);
     }
 
  }

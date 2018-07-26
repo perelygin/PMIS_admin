@@ -1,18 +1,20 @@
+
 <?php
-
-/* @var $this yii\web\View */
-
 use yii\helpers\Html;
-
+use yii\widgets\ActiveForm;
 $this->title = 'About';
 $this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="site-about">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        This is test:
-    </p>
+$form = ActiveForm::begin([
+    'id' => 'login-form',
+    'options' => ['class' => 'form-horizontal'],
+]) ?>
+    <?= $form->field($model, 'username') ?>
+    <?= $form->field($model, 'password') ?>
 
-    <code><?= __FILE__ ?></code>
-</div>
+ <div class="form-group">
+                        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
+                    </div>
+<?php ActiveForm::end() ?>
+
+

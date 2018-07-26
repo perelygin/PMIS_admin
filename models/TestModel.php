@@ -1,6 +1,10 @@
 <?php
+namespace app\models;
 
-class LoginForm extends \yii\base\Model
+use Yii;
+use yii\base\Model;
+
+class TestModel extends Model
 {
     public $username;
     public $password;
