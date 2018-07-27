@@ -64,13 +64,37 @@ class PmisController extends Controller
 		$model = new TestModel();
 		
 		if ($model->load(Yii::$app->request->post())){
-			Yii::$app->session->addFlash('info','c c c ccdddd');
+			Yii::$app->session->addFlash('info','Username is: '.$model->username);
+			$auth = Yii::$app->authManager;
+            $auth->removeAll(); //На всякий случай удаляем старые данные из БД...
+            // Создадим роли админа и редактора новостей
+			$admin = $auth->createRole('admin');
+			$projectmanager = $auth->createRole('projectmanager');
+			// запишем их в БД
+			$auth->add($admin);
+			$auth->add($projectmanager);
+			// Создаем разрешения. Например, просмотр админки viewAdminPage и редактирование новости updateNews
+	        $viewAdminPage = $auth->createPermission('viewAdminPage');
+	        $viewAdminPage->description = 'Просмотр админки';
+	        
+	        $BR_list_view = $auth->createPermission('BR_list_view');
+	        $BR_list_view->description = 'Просмотр перечня BR';
+	        
+	        // Запишем эти разрешения в БД
+	        $auth->add($viewAdminPage);
+	        $auth->add($BR_list_view);
+			
+			// Роли «Менеджер проектов» присваиваем разрешение «Просмотр перечня BR»
+			$auth->addChild($projectmanager,$BR_list_view);
+			// админ наследует роль редактора новостей. Он же админ, должен уметь всё! :D
+			$auth->addChild($admin, $projectmanager);
+			// Еще админ имеет собственное разрешение - «Просмотр админки»
+			$auth->addChild($admin, $viewAdminPage);
+			
 			return $this->refresh();
 		}
-		
-        return $this->render('test1',[
-            'model' => $model,
-        ]);
+		$model->username = 'Timur';
+        return $this->render('test1',['model' => $model,]);
     }
 
  }

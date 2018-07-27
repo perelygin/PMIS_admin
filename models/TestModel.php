@@ -13,6 +13,15 @@ class TestModel extends Model
     {
         return [
             // тут определяются правила валидации
+            ['username', 'required'],
+            ['password', 'safe'],
+          
+        ];
+    }
+    public function attributeLabels()
+    {
+        return [
+            'username' => 'Имя пользователя',
         ];
     }
 }
