@@ -18,11 +18,11 @@ class m180727_180201_User_table extends Migration
         }
 		
 			$this->createTable('user', [
-            'id' => $this->integer(10),
+            'id' => $this->primaryKey(11),
             'username' => $this->string(255)->notNull(),
             'password' => $this->string(255)->notNull(),
             'role' => $this->string(255)->notNull()->defaultValue('user'),
-            'PRIMARY KEY(id)',
+            //'PRIMARY KEY(id)',
         ], $tableOptions);
         
          // creates index for column `username`

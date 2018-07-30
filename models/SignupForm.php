@@ -9,8 +9,7 @@ class SignupForm extends Model{
  
  public function rules() {
  return [
- [['username', 'password'], 'required', 
-   'message' => 'Заполните поле'],
+ [['username', 'password'], 'required',  'message' => 'Заполните поле'],
  ];
  }
  
