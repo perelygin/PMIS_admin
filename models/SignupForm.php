@@ -8,16 +8,16 @@ class SignupForm extends Model{
  public $password;
  
  public function rules() {
- return [
- [['username', 'password'], 'required',  'message' => 'Заполните поле'],
- ];
+	return [
+		 [['username', 'password'], 'required',  'message' => 'Заполните поле'],
+	];
  }
  
  public function attributeLabels() {
- return [
- 'username' => 'Логин',
- 'password' => 'Пароль',
- ];
+	 return [
+		 'username' => 'Логин',
+		 'password' => 'Пароль',
+	 ];
  }
  
 }

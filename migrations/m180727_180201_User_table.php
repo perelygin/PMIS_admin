@@ -1,5 +1,6 @@
 <?php
 
+use yii\db\Schema;
 use yii\db\Migration;
 
 /**
@@ -18,11 +19,11 @@ class m180727_180201_User_table extends Migration
         }
 		
 			$this->createTable('user', [
-            'id' => $this->primaryKey(11),
-            'username' => $this->string(255)->notNull(),
-            'password' => $this->string(255)->notNull(),
-            'role' => $this->string(255)->notNull()->defaultValue('user'),
-            //'PRIMARY KEY(id)',
+				'id' => Schema::TYPE_PK,
+				'username' => Schema::TYPE_STRING . ' NOT NULL',
+				'auth_key' => Schema::TYPE_STRING . '(32) NOT NULL',
+				'password_hash' => Schema::TYPE_STRING . ' NOT NULL',
+				'password_reset_token' => Schema::TYPE_STRING,
         ], $tableOptions);
         
          // creates index for column `username`
