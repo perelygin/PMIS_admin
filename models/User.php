@@ -12,14 +12,15 @@ class User extends ActiveRecord implements IdentityInterface
 		{
 		return [
 			['username', 'required'],
-			['username', 'unique'],
-			['username', 'string', 'min' => 3],
+			['username', 'unique','message'=>'Пользователь с таким именем уже есть'],
+			['username', 'string', 'min' => 3, 'message'=>'Минимум 3 символа'],
 			['username', 'match', 'pattern' => '~^[A-Za-z][A-Za-z0-9]+$~', 'message'
 			=> 'Username can contain only alphanumeric characters.'],
 			[['username', 'password_hash', 'password_reset_token'],
 			'string', 'max' => 255
 			],
 			['auth_key', 'string', 'max' => 32],
+			//['email','string','max'=>7],
 		];
 		}
 

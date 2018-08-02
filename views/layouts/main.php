@@ -45,8 +45,8 @@ AppAsset::register($this);
 				['label' => 'Проекты', 'url'=>['/pmis/test1']],
 				['label' => 'Этапы работ', 'url'=>['/site/about']],
             ]],
-           ['label' => 'Регистрация', 'url' => ['/site/signup']],
-                     
+             
+            Yii::$app->user->isGuest ? ['label' => 'Регистрация', 'url' => ['/site/signup']] : ['label' => 'Личный кабинет', 'url' => ['/site/personalcabinet']],
             Yii::$app->user->isGuest ? (
                   ['label' => 'Login', 'url' => ['/site/login']]
                 
@@ -66,6 +66,8 @@ AppAsset::register($this);
             
         ],
     ]);
+ 
+    
     NavBar::end();
     ?>
 

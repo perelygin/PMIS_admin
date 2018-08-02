@@ -11,6 +11,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\SignupForm;
 use app\models\User;
+use app\models\PersonalCabinetForm;
 
 
 class SiteController extends Controller
@@ -128,6 +129,12 @@ class SiteController extends Controller
         return $this->render('about');
     }
     
+    //личный кабинет
+	public function actionPersonalcabinet(){
+		//$model = new PersonalCabinetForm();
+		return $this->render('personalcabinet');
+	}
+	
     //регистрация пользователя
     public function actionSignup(){
 	 if (!Yii::$app->user->isGuest) {
@@ -137,6 +144,7 @@ class SiteController extends Controller
 	 if($model->load(\Yii::$app->request->post()) && $model->validate()){
 		 $user = new User();
 		 $user->username = $model->username;
+		 $user->email = $model->email;
 		 $user->setPassword($model->password);
 		 $user->generateAuthKey();
 		 
@@ -145,10 +153,27 @@ class SiteController extends Controller
 			return $this->goHome();
 		 } 
 		 else{
-			 //echo '<pre>'; print_r($user); die;
+			 if($user->hasErrors()){
+				$ErrorsArray = $user->getErrors(); 	 
+				foreach ($ErrorsArray as $key => $value1){
+					foreach($value1 as $value2){
+						if($key == 'username'){
+							$model->addError($key, $value2);
+						} else {
+							Yii::$app->session->addFlash('error',"Ошибка сохранения. Реквизит ".$key." ".$value2);
+						}
+					}
+				}	
+				//echo '<pre>'; print_r($ErrorsArray); die;
 			 }
+			 
+			 
+			 
+		 }
 	  }
 	 return $this->render('signup', compact('model'));
 	}
+	
+	
     
 }
