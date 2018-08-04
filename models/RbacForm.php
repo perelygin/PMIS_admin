@@ -8,10 +8,10 @@ use yii\base\Model;
 /**
  * ContactForm is the model behind the contact form.
  */
-class PersonalCabinetForm extends Model
+class RbacForm extends Model
 {
     public $name;
-    public $email;
+   
    
     /**
      * @return array the validation rules.
@@ -20,9 +20,8 @@ class PersonalCabinetForm extends Model
     {
         return [
             // name, email, subject and body are required
-            [['name', 'email'], 'required'],
-            // email has to be a valid email address
-            ['email', 'email'],
+            [['name'], 'safe'],
+       
             
         ];
     }
@@ -56,4 +55,4 @@ class PersonalCabinetForm extends Model
         //}
         //return false;
     }
-}
+

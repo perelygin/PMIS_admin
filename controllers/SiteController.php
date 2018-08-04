@@ -11,7 +11,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\SignupForm;
 use app\models\User;
-use app\models\PersonalCabinetForm;
+use app\models\RbacForm;
 
 
 class SiteController extends Controller
@@ -31,6 +31,11 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+	                    'allow' => true,
+	                    'actions' => ['rbac'],
+	                    'roles' => ['ManageUserRole'],
+					],
                 ],
             ],
             'verbs' => [
@@ -130,9 +135,64 @@ class SiteController extends Controller
     }
     
     //личный кабинет
-	public function actionPersonalcabinet(){
-		//$model = new PersonalCabinetForm();
-		return $this->render('personalcabinet');
+	public function actionRbac(){
+	  if (!Yii::$app->user->can('ManageUserRole')){
+		  Yii::$app->session->addFlash('error',"У вас нет прав на использование этого функционала");
+			return $this->goHome();
+		  }
+		$model = new RbacForm();
+		if($model->load(\Yii::$app->request->post()) && $model->validate()){
+			$auth = Yii::$app->authManager;
+			$auth->removeAll(); //На всякий случай удаляем старые данные из БД...
+        
+	        // Создадим роли админа и прочих
+	        $admin = $auth->createRole('admin');
+	        $pm = $auth->createRole('projectmanager');
+	        $analyst = $auth->createRole('analyst');
+			$technologist = $auth->createRole('technologist');
+	        
+	        
+	        // запишем их в БД
+	        $auth->add($admin);
+	        $auth->add($pm);
+	        $auth->add($analyst);
+	        $auth->add($technologist);
+	        
+	        // Создаем разрешения. Например, просмотр админки viewAdminPage и редактирование новости updateNews
+			$UserRoleManagementPage = $auth->createPermission('ManageUserRole');
+			$UserRoleManagementPage->description = 'Управление ролями';
+			
+			//Просмотр журнала BR
+			$BRJournalView = $auth->createPermission('BRJournalView');
+			$BRJournalView->description = 'Просмотр журнала BR';
+			 
+			// Запишем эти разрешения в БД
+			$auth->add($UserRoleManagementPage);
+			$auth->add($BRJournalView); 
+			 
+			// Теперь добавим наследования. Для роли technologist мы добавим разрешение BRJournalView,
+			// а для админа добавим наследование от роли technologist и еще добавим собственное разрешение technologist
+        
+        // Роли «Редактор новостей» присваиваем разрешение «Редактирование новости»
+        $auth->addChild($technologist,$BRJournalView);
+
+        // админ наследует роль редактора новостей. Он же админ, должен уметь всё! :D
+        $auth->addChild($admin, $technologist);
+        
+        // Еще админ имеет собственное разрешение - «Просмотр админки»
+        $auth->addChild($admin, $UserRoleManagementPage);
+        
+        
+        
+         // Назначаем роль admin пользователю с ID 1
+        $auth->assign($admin, 4); 
+        
+        // Назначаем роль editor пользователю с ID 2
+        //$auth->assign($editor, 2);
+			 
+		}
+		return $this->render('RbacForm', compact('model'));
+	
 	}
 	
     //регистрация пользователя
@@ -150,6 +210,7 @@ class SiteController extends Controller
 		 
 		 
 		 if($user->save()){
+					
 			return $this->goHome();
 		 } 
 		 else{
