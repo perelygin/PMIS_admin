@@ -136,10 +136,10 @@ class SiteController extends Controller
     
     //личный кабинет
 	public function actionRbac(){
-	  if (!Yii::$app->user->can('ManageUserRole')){
-		  Yii::$app->session->addFlash('error',"У вас нет прав на использование этого функционала");
-			return $this->goHome();
-		  }
+	  //if (!Yii::$app->user->can('ManageUserRole')){
+		  //Yii::$app->session->addFlash('error',"У вас нет прав на использование этого функционала");
+			//return $this->goHome();
+		  //}
 		$model = new RbacForm();
 		if($model->load(\Yii::$app->request->post()) && $model->validate()){
 			$auth = Yii::$app->authManager;
@@ -147,45 +147,59 @@ class SiteController extends Controller
         
 	        // Создадим роли админа и прочих
 	        $admin = $auth->createRole('admin');
+	        $admin->description = 'Администратор';
 	        $pm = $auth->createRole('projectmanager');
+	        $pm->description = 'Менеджер проекта';
 	        $analyst = $auth->createRole('analyst');
-			$technologist = $auth->createRole('technologist');
-	        
+	        $analyst->description = 'Аналитик';
 	        
 	        // запишем их в БД
 	        $auth->add($admin);
 	        $auth->add($pm);
 	        $auth->add($analyst);
-	        $auth->add($technologist);
+	       
 	        
-	        // Создаем разрешения. Например, просмотр админки viewAdminPage и редактирование новости updateNews
+	        // Создаем разрешения. Например,управление ролями
 			$UserRoleManagementPage = $auth->createPermission('ManageUserRole');
 			$UserRoleManagementPage->description = 'Управление ролями';
 			
 			//Просмотр журнала BR
 			$BRJournalView = $auth->createPermission('BRJournalView');
 			$BRJournalView->description = 'Просмотр журнала BR';
+			//Регистрация BR 
+			$BRCreate = $auth->createPermission('BRCreate');
+			$BRCreate->description = 'Регистрация BR';
+			//Удаление BR 
+			$BRDelete = $auth->createPermission('BRDelete');
+			$BRDelete->description = 'Удаление BR';
+			 
+			 
 			 
 			// Запишем эти разрешения в БД
 			$auth->add($UserRoleManagementPage);
 			$auth->add($BRJournalView); 
+			$auth->add($BRCreate);
+			$auth->add($BRCreate);
 			 
-			// Теперь добавим наследования. Для роли technologist мы добавим разрешение BRJournalView,
-			// а для админа добавим наследование от роли technologist и еще добавим собственное разрешение technologist
+			// Теперь добавим наследования. Для роли analyst мы добавим разрешение BRJournalView,
+			// а для админа добавим наследование от роли analyst и еще добавим собственное разрешение 
         
-        // Роли «Редактор новостей» присваиваем разрешение «Редактирование новости»
-        $auth->addChild($technologist,$BRJournalView);
+        // Роли «Аналитик» присваиваем разрешение «Просмотр журнала BR»
+        $auth->addChild($analyst,$BRJournalView);
 
-        // админ наследует роль редактора новостей. Он же админ, должен уметь всё! :D
-        $auth->addChild($admin, $technologist);
+        // админ наследует роль analyst
+        $auth->addChild($admin, $analyst);
         
         // Еще админ имеет собственное разрешение - «Просмотр админки»
         $auth->addChild($admin, $UserRoleManagementPage);
         
-        
+        //Менеджер наследует от аналитика 
+         $auth->addChild($pm, $analyst);
+         $auth->addChild($pm, $BRCreate);
+         $auth->addChild($pm, $BRDelete);
         
          // Назначаем роль admin пользователю с ID 1
-        $auth->assign($admin, 4); 
+        //$auth->assign($admin, 4); 
         
         // Назначаем роль editor пользователю с ID 2
         //$auth->assign($editor, 2);
