@@ -46,7 +46,7 @@ AppAsset::register($this);
 		['label' => 'О системе', 'url' => ['/site/about']],
 	    ['label' => 'Контакты', 'url' => ['/site/contact']],
 	    ['label' => 'Справочники', 'items' => [
-					['label' => 'Проекты', 'url'=>['/pmis/test1']],
+					['label' => 'Настройки', 'url'=>['/settings/index']],
 					['label' => 'Этапы работ', 'url'=>['/site/about']],
 	            ]],
 	);
