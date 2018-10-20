@@ -5,23 +5,23 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "EnumSetings".
+ * This is the model class for table "EnumSettings".
  *
- * @property int $idEnumSetings
+ * @property int $idEnumSettings
  * @property int $id_param
  * @property int $enm_num_value
  * @property string $enm_str_value
  *
- * @property Setings $param
+ * @property Settings $param
  */
-class EnumSetings extends \yii\db\ActiveRecord
+class EnumSettings extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'EnumSetings';
+        return 'EnumSettings';
     }
 
     /**
@@ -32,7 +32,7 @@ class EnumSetings extends \yii\db\ActiveRecord
         return [
             [['id_param', 'enm_num_value'], 'integer'],
             [['enm_str_value'], 'string', 'max' => 500],
-           
+          
         ];
     }
 
@@ -42,12 +42,12 @@ class EnumSetings extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idEnumSetings' => 'Id Enum Setings',
+            'idEnumSettings' => 'Id Enum Settings',
             'id_param' => 'Id Param',
-            'enm_num_value' => 'Enm Num Value',
-            'enm_str_value' => 'Enm Str Value',
+            'enm_num_value' => 'Числовое значение параметра',
+            'enm_str_value' => 'Строковое значение параметра',
         ];
     }
 
-   
+    
 }
