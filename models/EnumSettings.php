@@ -30,7 +30,8 @@ class EnumSettings extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_param', 'enm_num_value'], 'integer'],
+            [['id_param'], 'integer'],
+            [['enm_num_value'],'number'],
             [['enm_str_value'], 'string', 'max' => 500],
           
         ];
@@ -44,8 +45,8 @@ class EnumSettings extends \yii\db\ActiveRecord
         return [
             'idEnumSettings' => 'Id Enum Settings',
             'id_param' => 'Id Param',
-            'enm_num_value' => 'Числовое значение параметра',
-            'enm_str_value' => 'Строковое значение параметра',
+            'enm_num_value' => 'Числово',
+            'enm_str_value' => 'Строка',
         ];
     }
 

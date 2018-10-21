@@ -11,6 +11,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use app\models\VwListOfWorkEffort;
+
 /**
  * SettingsController implements the CRUD actions for vw_settings model.
  */
@@ -50,15 +52,24 @@ class SettingsController extends Controller
    public function actionEnum_value($id)
     {
       $Enum = EnumSettings::find()->where(['id_param' => $id])->all();  
-      $a = Yii::$app->request->post();
+      $model = Settings::find()->where(['id_param' => $id])->one(); 
+       
+       $VwListOfWorkEffort = VwListOfWorkEffort::find()->where([
+			'idEstimateWorkPackages'=>1, 
+			'idWbs'=>60,
+			'idWorksOfEstimate'=>21])->orderBy('idLaborExpenditures')->all();
         
+        //if(isset($a['enm_num_value']) or isset($a['enm_str_value'])){
+		//	echo('dddd');die;
+	//	}
         
-        if(isset($a['enm_num_value']) or isset($a['enm_str_value'])){
-			echo('dddd');die;
-		}
-        
+         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			 echo('kkkk');die;
+		 } 
       return $this->render('enum_val', [
+            'model' => $model,
             'Enum' => $Enum,
+            'VwListOfWorkEffort'=>$VwListOfWorkEffort
       ]);
       
     }
