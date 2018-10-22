@@ -50,6 +50,17 @@ class Settings extends \yii\db\ActiveRecord
             'deleted' => 'Deleted',
         ];
     }
-
-  
+    //Есть ли у параметра такое значение параметра
+	public function is_HaveParamValue($Prm_enum_id){
+		$sql = "SELECT count(id_param) FROM Yii2pmis.settings where Prm_enum_id = ".$Prm_enum_id;
+	    $count = Yii::$app->db->createCommand($sql)->queryScalar();
+	    
+		if ($count>0){
+			
+			return true;
+			} else {
+				return false;
+			}
+	}
+    
 }

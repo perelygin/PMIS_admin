@@ -52,8 +52,8 @@ class vw_settings extends \yii\db\ActiveRecord
             'Prm_name' => 'Параметр системы',
             'Prm_description' => 'Описание параметра',
             'Prm_enum_id' => 'Prm Enum ID',
-            'enm_num_value' => 'Числовое значение параметра',
-            'enm_str_value' => 'Строковое значение параметра',
+            'enm_num_value' => 'Число',
+            'enm_str_value' => 'Строка',
         ];
     }
 }

@@ -11,7 +11,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-use app\models\VwListOfWorkEffort;
 
 /**
  * SettingsController implements the CRUD actions for vw_settings model.
@@ -39,6 +38,7 @@ class SettingsController extends Controller
      */
     public function actionIndex()
     {
+         Yii::$app->getUser()->setReturnUrl( Yii::$app->getRequest()->getUrl()); ///Запомнили текущую страницу
         $searchModel = new vw_settings_search();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -51,25 +51,59 @@ class SettingsController extends Controller
 
    public function actionEnum_value($id)
     {
-      $Enum = EnumSettings::find()->where(['id_param' => $id])->all();  
-      $model = Settings::find()->where(['id_param' => $id])->one(); 
+     
        
-       $VwListOfWorkEffort = VwListOfWorkEffort::find()->where([
-			'idEstimateWorkPackages'=>1, 
-			'idWbs'=>60,
-			'idWorksOfEstimate'=>21])->orderBy('idLaborExpenditures')->all();
-        
+        $a = Yii::$app->request->post();
+        if(isset($a['enm_num_value']) or isset($a['enm_str_value'])){  //  сохраняем значения параметров
+			foreach($a['enm_num_value'] as $key => $value){
+					$EnumSettings = EnumSettings::findOne($key);
+					$EnumSettings->enm_num_value = $value;
+					if(!$EnumSettings ->save()) Yii::$app->session->addFlash('error','ошибка сохраненния числового значения' );
+				}
+			foreach($a['enm_str_value'] as $key => $value){
+					$EnumSettings = EnumSettings::findOne($key);
+					$EnumSettings->enm_str_value = $value;
+					if(!$EnumSettings ->save()) Yii::$app->session->addFlash('error','ошибка сохраненния строкового значения' );
+				}	
+		}	
+        if(isset($a['btn'])) {   // анализируем нажатые кнопки
+			$btn_info = explode("_", $a['btn']);
+			if($btn_info[0] == 'add') {   // добавление значения параметра
+				$EnumSettings = new EnumSettings;
+				$EnumSettings->id_param = $id;
+				$EnumSettings->save();
+					   if($EnumSettings->hasErrors()){
+							Yii::$app->session->addFlash('error',"Ошибка регистрации значения параметра ");
+					   } 
+				
+			}
+			if($btn_info[0] == 'del') {   // добавление значения параметра
+				$settings = new Settings();
+				if ($settings->is_HaveParamValue($btn_info[1])){
+					 Yii::$app->session->addFlash('error','Это значение используется в параметре' );
+					}else{
+						$EnumSettings = EnumSettings::findOne($btn_info[1])->delete();
+						}
+				
+				
+			}	
+			if($btn_info[0] == 'save') {   // сохранение значений
+				return $this->goBack((!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : null));
+			}
+	    }	
         //if(isset($a['enm_num_value']) or isset($a['enm_str_value'])){
 		//	echo('dddd');die;
-	//	}
+		//	}
         
-         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			 echo('kkkk');die;
-		 } 
+         //if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			 //echo('kkkk');die;
+		 //} 
+	  $Enum = EnumSettings::find()->where(['id_param' => $id])->all();  
+      $model = Settings::find()->where(['id_param' => $id])->one(); 
       return $this->render('enum_val', [
             'model' => $model,
             'Enum' => $Enum,
-            'VwListOfWorkEffort'=>$VwListOfWorkEffort
+            
       ]);
       
     }

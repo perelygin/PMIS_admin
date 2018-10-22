@@ -45,7 +45,7 @@ class EnumSettings extends \yii\db\ActiveRecord
         return [
             'idEnumSettings' => 'Id Enum Settings',
             'id_param' => 'Id Param',
-            'enm_num_value' => 'Числово',
+            'enm_num_value' => 'Число',
             'enm_str_value' => 'Строка',
         ];
     }
