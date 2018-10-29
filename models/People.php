@@ -45,11 +45,11 @@ class People extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idHuman' => 'Id Human',
+            'idHuman' => 'Идентификатор',
             'Name' => 'Имя',
             'Family' => 'Фамилия',
             'patronymic'=>'Отчество',
-            'idOrganization' => 'Id Organization',
+            'idOrganization' => 'Организация',
         ];
     }
 

@@ -21,9 +21,9 @@ $org = Organization::find()->where(['deleted' => 0])->all();
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'Name')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'Family')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'Name')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'patronymic')->textInput(['maxlength' => true]) ?>
 
