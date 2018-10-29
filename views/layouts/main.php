@@ -47,6 +47,7 @@ AppAsset::register($this);
 	    ['label' => 'Контакты', 'url' => ['/site/contact']],
 	    ['label' => 'Справочники', 'items' => [
 					['label' => 'Настройки', 'url'=>['/settings/index']],
+					['label' => 'Люди', 'url'=>['/dictionary/index_people']],
 					['label' => 'Этапы работ', 'url'=>['/site/about']],
 	            ]],
 	);

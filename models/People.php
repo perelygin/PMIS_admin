@@ -33,8 +33,9 @@ class People extends \yii\db\ActiveRecord
     {
         return [
             [['idOrganization'], 'integer'],
-            [['Name', 'Family'], 'string', 'max' => 45],
-            [['idOrganization'], 'exist', 'skipOnError' => true, 'targetClass' => Organization::className(), 'targetAttribute' => ['idOrganization' => 'idOrganization']],
+              [['Family','Name'], 'required'],
+            [['Name', 'Family','patronymic'], 'string', 'max' => 45],
+            
         ];
     }
 
@@ -45,8 +46,9 @@ class People extends \yii\db\ActiveRecord
     {
         return [
             'idHuman' => 'Id Human',
-            'Name' => 'Name',
-            'Family' => 'Family',
+            'Name' => 'Имя',
+            'Family' => 'Фамилия',
+            'patronymic'=>'Отчество',
             'idOrganization' => 'Id Organization',
         ];
     }
