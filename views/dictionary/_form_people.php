@@ -20,14 +20,37 @@ $org = Organization::find()->where(['deleted' => 0])->all();
 <div class="people-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'Family')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'Name')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'patronymic')->textInput(['maxlength' => true]) ?>
+    <div class="container">
+	   <div class="row">
+		  <div class="col-sm-4">
+				 <?= $form->field($model, 'Family')->textInput(['maxlength' => true]) ?>
+	      </div>
+	      <div class="col-sm-4">
+				<?= $form->field($model, 'Name')->textInput(['maxlength' => true]) ?>
+		  </div>
+		   <div class="col-sm-4">
+				 <?= $form->field($model, 'patronymic')->textInput(['maxlength' => true])  ?>
+		   </div>
+	   </div>
+	   <div class="row">
+		    <div class="col-sm-4">
+				 <?= $form->field($model, 'idOrganization')->dropDownList($items,$params); ?>
+		   </div>
+	   </div>
+	   <div class="row">
+		  <div class="col-sm-4">
+				 <?= $form->field($model, 'phone_number')->textInput(['maxlength' => true]) ?>
+	      </div>
+	      <div class="col-sm-4">
+				<?= $form->field($model, 'internal_phone_number')->textInput(['maxlength' => true]) ?>
+		  </div>
+		   <div class="col-sm-4">
+				 <?= $form->field($model, 'Email')->textInput(['maxlength' => true])  ?>
+		   </div>
+	   </div>
+    </div>
 
-    <?= $form->field($model, 'idOrganization')->dropDownList($items,$params); ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

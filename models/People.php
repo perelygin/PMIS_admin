@@ -35,6 +35,8 @@ class People extends \yii\db\ActiveRecord
             [['idOrganization'], 'integer'],
               [['Family','Name'], 'required'],
             [['Name', 'Family','patronymic'], 'string', 'max' => 45],
+            [['phone_number', 'internal_phone_number', 'Email'], 'string', 'max' => 45],
+            [['Email'],'email'],
             
         ];
     }
@@ -50,6 +52,9 @@ class People extends \yii\db\ActiveRecord
             'Family' => 'Фамилия',
             'patronymic'=>'Отчество',
             'idOrganization' => 'Организация',
+            'phone_number' => 'Номер телефона',
+            'internal_phone_number' => 'Внутренний номер телефона',
+            'Email' => 'E-mail',
         ];
     }
 
