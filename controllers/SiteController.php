@@ -12,6 +12,7 @@ use app\models\ContactForm;
 use app\models\SignupForm;
 use app\models\User;
 use app\models\RbacForm;
+use SoapClient;
 
 
 class SiteController extends Controller
@@ -72,6 +73,12 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+
+	public function actionSoup()
+    {
+        $client = new SoapClient('http://192.168.20.55/mantis/api/soap/mantisconnect.php?wsdl', array('trace'=>1,'exceptions' => 0));
+    }
+
 
     /**
      * Login action.

@@ -54,7 +54,7 @@ AppAsset::register($this);
     
      
     if (Yii::$app->user->can('ManageUserRole')) 	$items[] = ['label' => 'Управление ролями', 'url' => ['/site/rbac']];
-	     
+	if (Yii::$app->user->can('ManageUserRole')) 	$items[] = ['label' => 'Soup', 'url' => ['/site/soup']];     
      
     if (Yii::$app->user->isGuest)	$items[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
 	
