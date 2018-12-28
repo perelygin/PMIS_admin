@@ -37,6 +37,9 @@ $org = Organization::find()->where(['deleted' => 0])->all();
 		    <div class="col-sm-4">
 				 <?= $form->field($model, 'idOrganization')->dropDownList($items,$params); ?>
 		   </div>
+		   <div class="col-sm-4">
+				 <?= $form->field($model, 'mantis_login')->textInput(['maxlength' => true])  ?>
+		   </div>
 	   </div>
 	   <div class="row">
 		  <div class="col-sm-4">
