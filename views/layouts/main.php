@@ -49,6 +49,7 @@ AppAsset::register($this);
 					['label' => 'Настройки', 'url'=>['/settings/index']],
 					['label' => 'Люди', 'url'=>['/dictionary/index_people']],
 					['label' => 'Этапы работ', 'url'=>['/site/about']],
+					['label' => 'Выходные', 'url'=>['/weekend/index']],
 	            ]],
 	);
     

@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\People;
 use app\models\PeopleSearch;
+use app\models\Weekends;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -129,4 +130,5 @@ class DictionaryController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+  
 }
