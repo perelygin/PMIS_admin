@@ -212,18 +212,32 @@ class SiteController extends Controller
         ////$auth->assign($editor, 2);
         
         ///07/12/2018
-			$auth = Yii::$app->authManager;	 
+			//$auth = Yii::$app->authManager;	 
+			////// Создаем разрешения. Например,управление ролями
+			//////Удаление узла wBS
+			//$WBSDeleteNode = $auth->createPermission('WBSDeleteNode');
+			//$WBSDeleteNode->description = 'Удаление узла wbs';
+			 
+			////// Запишем эти разрешения в БД
+			//$auth->add($WBSDeleteNode);
+		    
+		    //$PMRole = $auth->getRole('projectmanager');
+		    //$auth->addChild($PMRole,$WBSDeleteNode);
+			
+			
+		////23/04/2019
+			
+			 $auth = Yii::$app->authManager;	 
 			//// Создаем разрешения. Например,управление ролями
 			////Удаление узла wBS
-			$WBSDeleteNode = $auth->createPermission('WBSDeleteNode');
-			$WBSDeleteNode->description = 'Удаление узла wbs';
+			$LineUpWorks = $auth->createPermission('LineUpWorks');
+			$LineUpWorks->description = 'Удаляет все связ по работе и выстраивает работы по достижению результата последовательно в диаграмме Ганта';
 			 
 			//// Запишем эти разрешения в БД
-			$auth->add($WBSDeleteNode);
+			$auth->add($LineUpWorks);
 		    
 		    $PMRole = $auth->getRole('projectmanager');
-		    $auth->addChild($PMRole,$WBSDeleteNode);
-			 
+		    $auth->addChild($PMRole,$LineUpWorks);
 		}
 		return $this->render('RbacForm', compact('model'));
 	
