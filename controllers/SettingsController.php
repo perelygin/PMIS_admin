@@ -180,6 +180,7 @@ class SettingsController extends Controller
 
         return $this->redirect(['index']);
     }
+    
 
     /**
      * Finds the vw_settings model based on its primary key value.
@@ -196,4 +197,5 @@ class SettingsController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    
 }

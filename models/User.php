@@ -120,5 +120,27 @@ class User extends ActiveRecord implements IdentityInterface
 		}
 		return static::findOne(['password_reset_token' => $token]);
 	}
+	public function getUserMantisName()
+    {
+       return $this->mantisname;
+    }
+    public function getMantisPwd()
+    {
+		 if(!empty($this->mantisname) and !empty($this->mantispwd)){
+		  $mntpwd = base64_decode($this->mantispwd);
+	      $secret_string = $this->username.$this->email;
+			if(strlen($secret_string) < SODIUM_CRYPTO_SECRETBOX_KEYBYTES){
+				$secret_key = str_pad($secret_string,SODIUM_CRYPTO_SECRETBOX_KEYBYTES,$this->mantisname);
+				} else{
+					$secret_key = substr($secret_string,0,SODIUM_CRYPTO_SECRETBOX_KEYBYTES);
+					}
+		   $decrypted_mntpwd = sodium_crypto_secretbox_open($mntpwd, base64_decode($this->mantisnonce), $secret_key);
+	       return $decrypted_mntpwd; 
+		   } else{
+			   return false;
+			   }
+		   
+       
+    }
 }
 //}

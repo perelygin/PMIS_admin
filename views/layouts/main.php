@@ -48,7 +48,7 @@ AppAsset::register($this);
 	    ['label' => 'Справочники', 'items' => [
 					['label' => 'Настройки', 'url'=>['/settings/index']],
 					['label' => 'Люди', 'url'=>['/dictionary/index_people']],
-					['label' => 'Этапы работ', 'url'=>['/site/about']],
+					['label' => 'ML', 'url'=>['/mlearn/create_ds']],
 					['label' => 'Выходные', 'url'=>['/weekend/index']],
 	            ]],
 	);
