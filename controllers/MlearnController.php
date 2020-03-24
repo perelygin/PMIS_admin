@@ -56,6 +56,8 @@ class MlearnController extends  Controller
 						where woe.idEstimateWorkPackages = :idEWP  and woe.idWbs = :idWBS";
 					
 		   $all_results = Yii::$app->db->createCommand($sql1)->queryAll(); 				// выбрали все работы по BR
+		   $count_w = 0;  //число работ
+		   $count_w_0 = 0;  //число работ с нулевыми трудозатратами
 		   if(count($all_results)>0){
 			   foreach($all_results as $alr){
 				   $BR = BusinessRequests::findOne($alr['idBr']); //нашли BR
@@ -64,6 +66,10 @@ class MlearnController extends  Controller
 				   echo('<br><b>BR-'.$alr['BRNumber'].' '.$alr['BRName'].' </b>'.$alr['name']);
 				   foreach($all_works as $wrk){
 					   echo('<br>-------'.$wrk['WorkName'].' '.$wrk['mantisNumber'].' <b>'.$wrk['work_sum'].'</b> ');
+					   $count_w = $count_w+1;
+					   if($wrk['work_sum'] == 0){
+						   $count_w_0 = $count_w_0 + 1;
+					    }
 					   //if(!empty($wrk['mantisNumber'])){  //лезем в мантиссу по номеру инцидента за содержанием работы
 							//$issue_id = $wrk['mantisNumber'];
 							//$result =  $client->mc_issue_get($username, $password, $issue_id);
@@ -105,6 +111,8 @@ class MlearnController extends  Controller
 					   
 					}
 			    }
+			   echo('Общее число работ '.$count_w);
+			   echo('Число работ с нулевыми трудозатратами'.$count_w_0);
 			   die;
 			}
 		   
