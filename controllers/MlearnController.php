@@ -65,50 +65,48 @@ class MlearnController extends  Controller
 				   $all_works = Yii::$app->db->createCommand($sql2)->bindValues([':idEWP'=>$BR->getLastEstimateId(), ':idWBS'=>$alr['id']]   )->queryAll(); //получили все работы из последней оценки по каждому результату		   
 				   echo('<br><b>BR-'.$alr['BRNumber'].' '.$alr['BRName'].' </b>'.$alr['name']);
 				   foreach($all_works as $wrk){
+					   $MLDataset = new MLDataset();
+					   $MLDataset->idWorksOfEstimate = $wrk['idWorksOfEstimate'];
+					   $MLDataset->workEffort = $wrk['work_sum'];
+					   $MLDataset->mantisNumber = $wrk['mantisNumber'] ;
+					   $MLDataset->BR_number = $alr['BRNumber'];
+					   $MLDataset->Analit_name = $BR->get_analit_login();
 					   echo('<br>-------'.$wrk['WorkName'].' '.$wrk['mantisNumber'].' <b>'.$wrk['work_sum'].'</b> ');
 					   $count_w = $count_w+1;
 					   if($wrk['work_sum'] == 0){
 						   $count_w_0 = $count_w_0 + 1;
 					    }
-					   //if(!empty($wrk['mantisNumber'])){  //лезем в мантиссу по номеру инцидента за содержанием работы
-							//$issue_id = $wrk['mantisNumber'];
-							//$result =  $client->mc_issue_get($username, $password, $issue_id);
-							//if (is_soap_fault($result)){   //Ошибка
-									    ////Yii::$app->session->addFlash('error',"Ошибка получения информации из mantis SOAP: (faultcode: ".$result->faultcode." faultstring: ".$result->faultstring);
-									    //echo("Ошибка получения информации из mantis SOAP: (faultcode: ".$result->faultcode." faultstring: ".$result->faultstring);
-									    ////"detail".$result->detail);
-									
-							//}else{
-								////заносим данные в таблицу для датасета   
-									//$MLDataset = new MLDataset();
-									//$MLDataset->idWorksOfEstimate = $wrk['idWorksOfEstimate'];
-									//$MLDataset->BR_number = $alr['BRNumber'];
-									//$MLDataset->WorkName = $result->summary;
-									//$MLDataset->Analit_name = $BR->get_analit_login();
-									//$MLDataset->Work_descr = $result->description;
-									//$MLDataset->workEffort = $wrk['work_sum'];
-									//$MLDataset->mantisNumber = $wrk['mantisNumber'] ;
-									//if($MLDataset->save()){
-																	
+					   if(!empty($wrk['mantisNumber'])){  //лезем в мантиссу по номеру инцидента за содержанием работы
+							$issue_id = $wrk['mantisNumber'];
+							$result =  $client->mc_issue_get($username, $password, $issue_id);
+							if (is_soap_fault($result)){   //Ошибка
+									    //Yii::$app->session->addFlash('error',"Ошибка получения информации из mantis SOAP: (faultcode: ".$result->faultcode." faultstring: ".$result->faultstring);
+									    echo("Ошибка получения информации из mantis SOAP: (faultcode: ".$result->faultcode." faultstring: ".$result->faultstring);
+									    //"detail".$result->detail);
+							}else{
+								//заносим данные в таблицу для датасета   
+								$MLDataset->WorkName = $result->summary;
+								$MLDataset->Work_descr = $result->description;
+								//echo($result->description); die;
+							}
+					    } else{ //если номера инцидента нет
+								$MLDataset->WorkName = $wrk['WorkName'];
+								$MLDataset->Work_descr = $wrk['WorkName'];
+						}
+					  
+						if($MLDataset->save()){
 										
-									 //} else{
-										 //if($MLDataset->hasErrors()){
-											//$ErrorsArray = $MLDataset->getErrors(); 	 
-											//foreach ($ErrorsArray as $key => $value1){
-												//foreach($value1 as $value2){
-													    //echo("Ошибка сохранения. Реквизит ".$key." ".$value2); die;
-														////Yii::$app->session->addFlash('error',"Ошибка сохранения. Реквизит ".$key." ".$value2);
-												//}
-											//}	
-										 //}
-									//}	
-								////echo($result->description); die;
-								
-								//}
-					   
-					    //}
-					   
-					   
+						 } else{
+							 if($MLDataset->hasErrors()){
+								$ErrorsArray = $MLDataset->getErrors(); 	 
+								foreach ($ErrorsArray as $key => $value1){
+									foreach($value1 as $value2){
+										    echo("Ошибка сохранения. Реквизит ".$key." ".$value2); die;
+											//Yii::$app->session->addFlash('error',"Ошибка сохранения. Реквизит ".$key." ".$value2);
+									}
+								}	
+							 }
+						}	 
 					}
 			    }
 			   echo('Общее число работ '.$count_w);
