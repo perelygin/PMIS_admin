@@ -15,6 +15,9 @@ class MlearnController extends  Controller
 {
 	public function actionCreate_ds()
     {
+	   //$tst = "БФТЗ 18375   (BR 15018): 4.3.2.3.1.1. •  4.5.5. -Треб  ов   ани я   к  методу 'Получение льготного курса. '. Front"; 
+	   //echo($tst.'\n');
+	   //echo(mb_ereg_replace("[0-9][.]*|[•,:,(,),',-,?,!,→,\",/]|BR|БФТЗ|ТЗ|[ ]+",' ',$tst));die;
 	   //Считывание настроек
 		$settings = vw_settings::findOne(['Prm_name'=>'Mantis_path_create']);   //путь к wsdl тянем из настроек
 						if (!is_null($settings)) $url_mantis_cr = $settings->enm_str_value; //путь к мантиссе
@@ -71,7 +74,11 @@ class MlearnController extends  Controller
 					   $MLDataset->mantisNumber = $wrk['mantisNumber'] ;
 					   $MLDataset->BR_number = $alr['BRNumber'];
 					   $MLDataset->Analit_name = $BR->get_analit_login();
+					   $MLDataset->WorkName = $wrk['WorkName'];
+					   $wdescr = mb_ereg_replace("[0-9][.]*|[•,:,(,),',-,?,!,→,\",/]|BR|БФТЗ|ТЗ|[ ]+",' ',str_replace(array("\r\n","\r","\n","	"),' ',strip_tags($wrk['WorkName'])));
+					   $MLDataset->Work_descr = mb_ereg_replace("[ ]+",' ',$wdescr);
 					   echo('<br>-------'.$wrk['WorkName'].' '.$wrk['mantisNumber'].' <b>'.$wrk['work_sum'].'</b> ');
+					   
 					   $count_w = $count_w+1;
 					   if($wrk['work_sum'] == 0){
 						   $count_w_0 = $count_w_0 + 1;
@@ -86,13 +93,16 @@ class MlearnController extends  Controller
 							}else{
 								//заносим данные в таблицу для датасета   
 								$MLDataset->WorkName = $result->summary;
-								$MLDataset->Work_descr = $result->description;
+								$wdescr = mb_ereg_replace("[0-9][.]*|[•,:,(,),',-,?,!,→,\",/]|BR|БФТЗ|ТЗ|[ ]+",' ',str_replace(array("\r\n","\r","\n","	"),' ',strip_tags($result->description)));
+								$MLDataset->Work_descr = mb_ereg_replace("[ ]+",' ',$wdescr);
+								
 								//echo($result->description); die;
 							}
-					    } else{ //если номера инцидента нет
-								$MLDataset->WorkName = $wrk['WorkName'];
-								$MLDataset->Work_descr = $wrk['WorkName'];
-						}
+					    } 
+					    //else{ //если номера инцидента нет
+								//$MLDataset->WorkName = $wrk['WorkName'];
+								//$MLDataset->Work_descr =  mb_ereg_replace("[0-9][.]*",'',str_replace(array("\r\n","\r","\n","	"),' ',strip_tags($wrk['WorkName'])));
+						//}
 					  
 						if($MLDataset->save()){
 										
